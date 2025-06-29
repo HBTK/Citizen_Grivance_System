@@ -16,7 +16,7 @@ const GrievanceReopen = () => {
     const fetchGrievance = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/complaints/grievances/${grievanceId}`,
+          `https://citizen-grivance-system.onrender.com/api/complaints/grievances/${grievanceId}`,
           {
             credentials: "include", // if using session auth
           }
@@ -62,7 +62,7 @@ const GrievanceReopen = () => {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/complaints/${grievanceId}/reopen`,
+        `https://citizen-grivance-system.onrender.com/api/complaints/${grievanceId}/reopen`,
         {
           method: "POST",
           body: formData,

@@ -1,128 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import { pageContainer, mainContentStyle } from '../../styles/layout';
-import Navigation from '../../components/common/Navigation';
+import React, { useState, useEffect } from "react";
+import { pageContainer, mainContentStyle } from "../../styles/layout";
+import Navigation from "../../components/common/Navigation";
 
 const AdminAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const fetchAnalytics = async () => {
-    try {
-      // Fetch dashboard metrics
-      const resDashboard = await fetch("http://localhost:5000/api/admin/dashboard", {
-        method: "GET",
-        credentials: "include",
-      });
-      const dashboardData = await resDashboard.json();
+    const fetchAnalytics = async () => {
+      try {
+        // Fetch dashboard metrics
+        const resDashboard = await fetch(
+          "https://citizen-grivance-system.onrender.com/api/admin/dashboard",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        const dashboardData = await resDashboard.json();
 
-      if (!resDashboard.ok) {
-        alert(dashboardData.message || "Failed to fetch dashboard stats");
-        return;
+        if (!resDashboard.ok) {
+          alert(dashboardData.message || "Failed to fetch dashboard stats");
+          return;
+        }
+
+        // Fetch officer performance
+        const resOfficer = await fetch(
+          "https://citizen-grivance-system.onrender.com/api/admin/officerPerformance",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        const officerData = await resOfficer.json();
+
+        if (!resOfficer.ok) {
+          alert(officerData.message || "Failed to fetch officer performance");
+          return;
+        }
+
+        // Fetch extended analytics
+        const resExtended = await fetch(
+          "https://citizen-grivance-system.onrender.com/api/admin/extendedAnalytics",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        const extended = await resExtended.json();
+
+        if (!resExtended.ok) {
+          alert(extended.message || "Failed to fetch extended analytics");
+          return;
+        }
+
+        // Merge all into a single state object
+        const fullAnalytics = {
+          ...dashboardData,
+          officerPerformance: officerData.performance,
+          categoryBreakdown: extended.categoryBreakdown,
+          monthlyTrends: extended.monthlyTrends,
+          systemMetrics: extended.systemMetrics,
+        };
+
+        setAnalyticsData(fullAnalytics);
+      } catch (err) {
+        console.error("Error fetching analytics:", err);
+        alert("Server error. Try again later.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      // Fetch officer performance
-      const resOfficer = await fetch("http://localhost:5000/api/admin/officerPerformance", {
-        method: "GET",
-        credentials: "include",
-      });
-      const officerData = await resOfficer.json();
-
-      if (!resOfficer.ok) {
-        alert(officerData.message || "Failed to fetch officer performance");
-        return;
-      }
-
-      // Fetch extended analytics
-      const resExtended = await fetch("http://localhost:5000/api/admin/extendedAnalytics", {
-        method: "GET",
-        credentials: "include",
-      });
-      const extended = await resExtended.json();
-
-      if (!resExtended.ok) {
-        alert(extended.message || "Failed to fetch extended analytics");
-        return;
-      }
-
-      // Merge all into a single state object
-      const fullAnalytics = {
-        ...dashboardData,
-        officerPerformance: officerData.performance,
-        categoryBreakdown: extended.categoryBreakdown,
-        monthlyTrends: extended.monthlyTrends,
-        systemMetrics: extended.systemMetrics,
-      };
-
-      setAnalyticsData(fullAnalytics);
-    } catch (err) {
-      console.error("Error fetching analytics:", err);
-      alert("Server error. Try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchAnalytics();
-}, []);
-
-
+    fetchAnalytics();
+  }, []);
 
   const metricCardStyle = {
-    backgroundColor: 'white',
-    padding: '24px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    textAlign: 'center',
+    backgroundColor: "white",
+    padding: "24px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    textAlign: "center",
     flex: 1,
-    minWidth: '200px'
+    minWidth: "200px",
   };
 
   const chartContainerStyle = {
-    backgroundColor: 'white',
-    padding: '24px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    marginTop: '20px'
+    backgroundColor: "white",
+    padding: "24px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    marginTop: "20px",
   };
 
   const progressBarStyle = (percentage) => ({
-    width: '100%',
-    height: '8px',
-    backgroundColor: '#e9ecef',
-    borderRadius: '4px',
-    overflow: 'hidden',
-    marginTop: '8px'
+    width: "100%",
+    height: "8px",
+    backgroundColor: "#e9ecef",
+    borderRadius: "4px",
+    overflow: "hidden",
+    marginTop: "8px",
   });
 
   const progressFillStyle = (percentage) => ({
     width: `${percentage}%`,
-    height: '100%',
-    backgroundColor: '#007bff',
-    transition: 'width 0.3s ease'
+    height: "100%",
+    backgroundColor: "#007bff",
+    transition: "width 0.3s ease",
   });
 
   const tableStyle = {
-    width: '100%',
-    borderCollapse: 'collapse',
-    marginTop: '15px'
+    width: "100%",
+    borderCollapse: "collapse",
+    marginTop: "15px",
   };
 
   const thStyle = {
-    backgroundColor: '#f8f9fa',
-    padding: '12px',
-    textAlign: 'left',
-    borderBottom: '2px solid #dee2e6',
-    fontWeight: '600',
-    fontSize: '14px',
-    color: '#495057'
+    backgroundColor: "#f8f9fa",
+    padding: "12px",
+    textAlign: "left",
+    borderBottom: "2px solid #dee2e6",
+    fontWeight: "600",
+    fontSize: "14px",
+    color: "#495057",
   };
 
   const tdStyle = {
-    padding: '12px',
-    borderBottom: '1px solid #dee2e6',
-    fontSize: '14px',
-    color: '#212529'
+    padding: "12px",
+    borderBottom: "1px solid #dee2e6",
+    fontSize: "14px",
+    color: "#212529",
   };
 
   if (loading) {
@@ -130,7 +137,7 @@ const AdminAnalytics = () => {
       <div style={pageContainer}>
         <Navigation />
         <div style={mainContentStyle}>
-          <div style={{ textAlign: 'center', padding: '40px' }}>
+          <div style={{ textAlign: "center", padding: "40px" }}>
             <p>Loading analytics data...</p>
           </div>
         </div>
@@ -504,4 +511,4 @@ const AdminAnalytics = () => {
   );
 };
 
-export default AdminAnalytics; 
+export default AdminAnalytics;

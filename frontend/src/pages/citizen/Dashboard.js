@@ -14,7 +14,7 @@ const CitizenDashboard = () => {
     const fetchGrievances = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/complaints/userComplaints`,
+          `https://citizen-grivance-system.onrender.com/api/complaints/userComplaints`,
           {
             credentials: "include",
             headers: {
@@ -79,24 +79,24 @@ const CitizenDashboard = () => {
   };
 
   const statusStyle = (status) => {
-  const base = {
-    fontWeight: 'bold',
-    padding: '4px 8px',
-    borderRadius: '6px',
-    fontSize: '14px',
-    textTransform: 'capitalize',
-    display: 'inline-block',
-  };
+    const base = {
+      fontWeight: "bold",
+      padding: "4px 8px",
+      borderRadius: "6px",
+      fontSize: "14px",
+      textTransform: "capitalize",
+      display: "inline-block",
+    };
 
-  const colors = {
-    pending: { backgroundColor: '#fff3cd', color: '#856404' },
-    in_progress: { backgroundColor: '#d1ecf1', color: '#0c5460' },
-    revert_back: { backgroundColor: '#f8d7da', color: '#721c24' },
-    resolved: { backgroundColor: '#d4edda', color: '#155724' },
-  };
+    const colors = {
+      pending: { backgroundColor: "#fff3cd", color: "#856404" },
+      in_progress: { backgroundColor: "#d1ecf1", color: "#0c5460" },
+      revert_back: { backgroundColor: "#f8d7da", color: "#721c24" },
+      resolved: { backgroundColor: "#d4edda", color: "#155724" },
+    };
 
-  return { ...base, ...(colors[status] || {}) };
-};
+    return { ...base, ...(colors[status] || {}) };
+  };
 
   const buttonStyle = {
     padding: "8px 16px",
@@ -401,7 +401,8 @@ const CitizenDashboard = () => {
                           in_progress: "In Progress",
                           revert_back: "Revert Back",
                           resolved: "Resolved",
-                        }[grievance.status.toLowerCase()] || grievance.status.toLowerCase()}
+                        }[grievance.status.toLowerCase()] ||
+                          grievance.status.toLowerCase()}
                       </span>
                       <div style={{ display: "flex", gap: "8px" }}>
                         <button

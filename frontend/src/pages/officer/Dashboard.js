@@ -12,7 +12,7 @@ const OfficerDashboard = () => {
     const fetchGrievances = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/officer/dashboard",
+          "https://citizen-grivance-system.onrender.com/api/officer/dashboard",
           {
             method: "GET",
             credentials: "include",
@@ -36,8 +36,6 @@ const OfficerDashboard = () => {
 
     fetchGrievances();
   }, []);
-
-  
 
   const handleViewDetails = (grievanceId) => {
     // Navigate to grievance details page
@@ -191,8 +189,9 @@ const OfficerDashboard = () => {
                     </td>
                     <td style={tdStyle}>
                       <span style={statusStyle(grievance.status)}>
-                       
-                        {grievance.status === 'in_progress' ? 'In Progress' : grievance.status}
+                        {grievance.status === "in_progress"
+                          ? "In Progress"
+                          : grievance.status}
                       </span>
                     </td>
                     <td style={tdStyle}>

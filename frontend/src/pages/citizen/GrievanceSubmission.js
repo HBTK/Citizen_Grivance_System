@@ -170,7 +170,7 @@ const GrievanceSubmission = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/complaints/submit",
+        "https://citizen-grivance-system.onrender.com/api/complaints/submit",
         {
           method: "POST",
           body: formData,

@@ -13,14 +13,14 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       try {
         const complaintsRes = await fetch(
-          "http://localhost:5000/api/admin/get-complaints",
+          "https://citizen-grivance-system.onrender.com/api/admin/get-complaints",
           {
             method: "GET",
             credentials: "include",
           }
         );
         const officersRes = await fetch(
-          "http://localhost:5000/api/admin/get-officers",
+          "https://citizen-grivance-system.onrender.com/api/admin/get-officers",
           {
             method: "GET",
             credentials: "include",
@@ -29,8 +29,6 @@ const AdminDashboard = () => {
 
         const complaintsData = await complaintsRes.json();
         const officersData = await officersRes.json();
-
-        
 
         setPendingAssignments(complaintsData.complaints || []);
         setOfficers(officersData.officers || []);
@@ -46,12 +44,15 @@ const AdminDashboard = () => {
 
   const handleAssignGrievance = async (grievanceId, officerName) => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/assign", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ grievanceId, officerName }),
-      });
+      const res = await fetch(
+        "https://citizen-grivance-system.onrender.com/api/admin/assign",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ grievanceId, officerName }),
+        }
+      );
 
       const data = await res.json();
 
@@ -73,7 +74,6 @@ const AdminDashboard = () => {
       alert("Server error while assigning officer");
     }
   };
-
 
   const cardStyle = {
     backgroundColor: "white",
@@ -139,7 +139,6 @@ const AdminDashboard = () => {
     backgroundColor: "#007bff",
     color: "white",
   };
-
 
   if (loading) {
     return (
@@ -260,7 +259,6 @@ const AdminDashboard = () => {
             </table>
           )}
         </div>
-
       </div>
     </div>
   );

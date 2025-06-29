@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { pageContainer, mainContentStyle } from '../../styles/layout';
-import { useNavigate  } from 'react-router-dom';
-import Navigation from '../../components/common/Navigation';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { pageContainer, mainContentStyle } from "../../styles/layout";
+import { useNavigate } from "react-router-dom";
+import Navigation from "../../components/common/Navigation";
 
 const OfficerGrievanceDetails = () => {
   const navigate = useNavigate();
- const { grievanceId } = useParams();
+  const { grievanceId } = useParams();
   const [grievance, setGrievance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [evidenceFile, setEvidenceFile] = useState(null);
-  const [updateStatus, setUpdateStatus] = useState('');
-  const [updateNotes, setUpdateNotes] = useState('');
+  const [updateStatus, setUpdateStatus] = useState("");
+  const [updateNotes, setUpdateNotes] = useState("");
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/officer/grievance/${grievanceId}`,
+          `https://citizen-grivance-system.onrender.com/api/officer/grievance/${grievanceId}`,
           { method: "GET", credentials: "include" }
         );
         const data = await res.json();
@@ -41,95 +41,105 @@ const OfficerGrievanceDetails = () => {
   };
 
   const handleCombinedSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (updateStatus === "resolved" && !evidenceFile) {
-    alert("Please upload evidence when status is set to Resolved.");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("nstatus", updateStatus);
-  formData.append("notes", updateNotes);
-  if (evidenceFile) {
-    formData.append("file", evidenceFile);
-  }
-
-  try {
-    const res = await fetch(
-      `http://localhost:5000/api/officer/submitUpdate/${grievanceId}`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: formData
-      }
-    );
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert("Update submitted successfully");
-      setGrievance(data.grievance);
-      navigate("/officer/dashboard");
-    } else {
-      alert(data.message || "Failed to submit update");
+    if (updateStatus === "resolved" && !evidenceFile) {
+      alert("Please upload evidence when status is set to Resolved.");
+      return;
     }
-  } catch (err) {
-    console.error("Combined submit error:", err);
-    alert("Server error during update.");
-  }
 
-  // Reset
-  setUpdateStatus("");
-  setUpdateNotes("");
-  setEvidenceFile(null);
-};
+    const formData = new FormData();
+    formData.append("nstatus", updateStatus);
+    formData.append("notes", updateNotes);
+    if (evidenceFile) {
+      formData.append("file", evidenceFile);
+    }
+
+    try {
+      const res = await fetch(
+        `https://citizen-grivance-system.onrender.com/api/officer/submitUpdate/${grievanceId}`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Update submitted successfully");
+        setGrievance(data.grievance);
+        navigate("/officer/dashboard");
+      } else {
+        alert(data.message || "Failed to submit update");
+      }
+    } catch (err) {
+      console.error("Combined submit error:", err);
+      alert("Server error during update.");
+    }
+
+    // Reset
+    setUpdateStatus("");
+    setUpdateNotes("");
+    setEvidenceFile(null);
+  };
 
   const cardStyle = {
-    backgroundColor: 'white',
-    padding: '24px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    marginBottom: '20px'
+    backgroundColor: "white",
+    padding: "24px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    marginBottom: "20px",
   };
 
   const statusStyle = (status) => ({
-    padding: '6px 12px',
-    borderRadius: '16px',
-    fontSize: '12px',
-    fontWeight: '600',
-    backgroundColor: status === 'Pending' ? '#fff3cd' : 
-                    status === 'In Progress' ? '#cce5ff' : 
-                    status === 'Resolved' ? '#d4edda' : '#f8d7da',
-    color: status === 'Pending' ? '#856404' : 
-           status === 'In Progress' ? '#004085' : 
-           status === 'Resolved' ? '#155724' : '#721c24'
+    padding: "6px 12px",
+    borderRadius: "16px",
+    fontSize: "12px",
+    fontWeight: "600",
+    backgroundColor:
+      status === "Pending"
+        ? "#fff3cd"
+        : status === "In Progress"
+        ? "#cce5ff"
+        : status === "Resolved"
+        ? "#d4edda"
+        : "#f8d7da",
+    color:
+      status === "Pending"
+        ? "#856404"
+        : status === "In Progress"
+        ? "#004085"
+        : status === "Resolved"
+        ? "#155724"
+        : "#721c24",
   });
 
   const buttonStyle = {
-    padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '500'
+    padding: "10px 20px",
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "14px",
+    fontWeight: "500",
   };
 
   const inputStyle = {
-    width: '100%',
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    fontSize: '14px',
-    marginBottom: '15px'
+    width: "100%",
+    padding: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "4px",
+    fontSize: "14px",
+    marginBottom: "15px",
   };
 
   const textareaStyle = {
     ...inputStyle,
-    minHeight: '100px',
-    resize: 'vertical'
+    minHeight: "100px",
+    resize: "vertical",
   };
 
   if (loading) {
@@ -137,7 +147,7 @@ const OfficerGrievanceDetails = () => {
       <div style={pageContainer}>
         <Navigation />
         <div style={mainContentStyle}>
-          <div style={{ textAlign: 'center', padding: '40px' }}>
+          <div style={{ textAlign: "center", padding: "40px" }}>
             <p>Loading grievance details...</p>
           </div>
         </div>
@@ -385,82 +395,86 @@ const OfficerGrievanceDetails = () => {
         </div>
 
         {/* Status Updates */}
-<div style={cardStyle}>
-  <h2
-    style={{
-      fontSize: 20,
-      fontFamily: "Roboto",
-      fontWeight: 600,
-      marginBottom: "20px",
-    }}
-  >
-    Status Updates
-  </h2>
-  <div style={{ marginBottom: "20px" }}>
-    {grievance?.logs && grievance.logs.length > 0 ? (
-      grievance.logs.map((log, index) => (
-        <div
-          key={index}
-          style={{
-            padding: "15px",
-            border: "1px solid #dee2e6",
-            borderRadius: "6px",
-            marginBottom: "10px",
-            backgroundColor: "#f8f9fa",
-          }}
-        >
-          <div
+        <div style={cardStyle}>
+          <h2
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "8px",
+              fontSize: 20,
+              fontFamily: "Roboto",
+              fontWeight: 600,
+              marginBottom: "20px",
             }}
           >
-            <span style={{ fontSize: "14px", fontWeight: "500" }}>
-              {log.officerName}
-            </span>
-            <span style={{ fontSize: "12px", color: "#6c757d" }}>
-              {new Date(log.timestamp).toLocaleDateString()}
-            </span>
+            Status Updates
+          </h2>
+          <div style={{ marginBottom: "20px" }}>
+            {grievance?.logs && grievance.logs.length > 0 ? (
+              grievance.logs.map((log, index) => (
+                <div
+                  key={index}
+                  style={{
+                    padding: "15px",
+                    border: "1px solid #dee2e6",
+                    borderRadius: "6px",
+                    marginBottom: "10px",
+                    backgroundColor: "#f8f9fa",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <span style={{ fontSize: "14px", fontWeight: "500" }}>
+                      {log.officerName}
+                    </span>
+                    <span style={{ fontSize: "12px", color: "#6c757d" }}>
+                      {new Date(log.timestamp).toLocaleDateString()}
+                    </span>
+                  </div>
+                  {log.status && (
+                    <span style={statusStyle(log.status)}>{log.status}</span>
+                  )}
+                  {log.message && (
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        color: "#495057",
+                        marginTop: "8px",
+                      }}
+                    >
+                      {log.message}
+                    </p>
+                  )}
+                  {log.attachments && log.attachments.length > 0 && (
+                    <div style={{ marginTop: "10px" }}>
+                      <strong>Attachments:</strong>
+                      <ul>
+                        {log.attachments.map((att, idx) => (
+                          <li key={idx}>
+                            <a
+                              href={att.fileUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {att.fileType.split("/")[1] || "File"}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p style={{ fontSize: "14px", color: "#6c757d" }}>
+                No status updates yet.
+              </p>
+            )}
           </div>
-          {log.status && (
-            <span style={statusStyle(log.status)}>{log.status}</span>
-          )}
-          {log.message && (
-            <p
-              style={{
-                fontSize: "14px",
-                color: "#495057",
-                marginTop: "8px",
-              }}
-            >
-              {log.message}
-            </p>
-          )}
-          {log.attachments && log.attachments.length > 0 && (
-            <div style={{ marginTop: "10px" }}>
-              <strong>Attachments:</strong>
-              <ul>
-                {log.attachments.map((att, idx) => (
-                  <li key={idx}>
-                    <a href={att.fileUrl} target="_blank" rel="noreferrer">
-                      {att.fileType.split("/")[1] || "File"}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
-      ))
-    ) : (
-      <p style={{ fontSize: "14px", color: "#6c757d" }}>
-        No status updates yet.
-      </p>
-    )}
-  </div>
-</div>
 
         <form onSubmit={handleCombinedSubmit} style={{ ...cardStyle }}>
           <h2
@@ -550,4 +564,4 @@ const OfficerGrievanceDetails = () => {
   );
 };
 
-export default OfficerGrievanceDetails; 
+export default OfficerGrievanceDetails;

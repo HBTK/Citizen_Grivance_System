@@ -1,63 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { pageContainer, mainContentStyle } from '../../styles/layout';
-import Navigation from '../../components/common/Navigation';
+import React, { useState, useEffect } from "react";
+import { pageContainer, mainContentStyle } from "../../styles/layout";
+import Navigation from "../../components/common/Navigation";
 
 const OfficerAnalytics = () => {
   const [keyMetrics, setKeyMetrics] = useState(null);
-const [performanceData, setPerformanceData] = useState(null);
-const [loading, setLoading] = useState(true);
+  const [performanceData, setPerformanceData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const fetchAllOfficerAnalytics = async () => {
-    try {
-      const [statsRes, detailsRes] = await Promise.all([
-        fetch("http://localhost:5000/api/officer/stats", {
-          method: "GET",
-          credentials: "include",
-        }),
-        fetch("http://localhost:5000/api/officer/analyticsDetails", {
-          method: "GET",
-          credentials: "include",
-        })
-      ]);
+  useEffect(() => {
+    const fetchAllOfficerAnalytics = async () => {
+      try {
+        const [statsRes, detailsRes] = await Promise.all([
+          fetch(
+            "https://citizen-grivance-system.onrender.com/api/officer/stats",
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          ),
+          fetch(
+            "https://citizen-grivance-system.onrender.com/api/officer/analyticsDetails",
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          ),
+        ]);
 
-      const statsData = await statsRes.json();
-      const detailsData = await detailsRes.json();
+        const statsData = await statsRes.json();
+        const detailsData = await detailsRes.json();
 
-      if (!statsRes.ok || !detailsRes.ok) {
-        alert(statsData.message || detailsData.message || "Failed to fetch analytics data");
-        return;
+        if (!statsRes.ok || !detailsRes.ok) {
+          alert(
+            statsData.message ||
+              detailsData.message ||
+              "Failed to fetch analytics data"
+          );
+          return;
+        }
+
+        setKeyMetrics(statsData);
+        setPerformanceData(detailsData);
+      } catch (err) {
+        console.error("Error fetching officer analytics:", err);
+        alert("Server error. Try again later.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      setKeyMetrics(statsData);
-      setPerformanceData(detailsData);
-    } catch (err) {
-      console.error("Error fetching officer analytics:", err);
-      alert("Server error. Try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchAllOfficerAnalytics();
-}, []);
+    fetchAllOfficerAnalytics();
+  }, []);
 
   const metricCardStyle = {
-    backgroundColor: 'white',
-    padding: '24px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    textAlign: 'center',
+    backgroundColor: "white",
+    padding: "24px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    textAlign: "center",
     flex: 1,
-    minWidth: '200px'
+    minWidth: "200px",
   };
 
   const chartContainerStyle = {
-    backgroundColor: 'white',
-    padding: '24px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    marginTop: '20px'
+    backgroundColor: "white",
+    padding: "24px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    marginTop: "20px",
   };
 
   if (loading) {
@@ -65,7 +75,7 @@ useEffect(() => {
       <div style={pageContainer}>
         <Navigation />
         <div style={mainContentStyle}>
-          <div style={{ textAlign: 'center', padding: '40px' }}>
+          <div style={{ textAlign: "center", padding: "40px" }}>
             <p>Loading analytics data...</p>
           </div>
         </div>

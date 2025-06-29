@@ -28,7 +28,7 @@ const GrievanceTracking = () => {
     const fetchGrievance = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/complaints/${trackingId}`
+          `https://citizen-grivance-system.onrender.com/api/complaints/${trackingId}`
         );
         const data = await response.json();
 
@@ -64,10 +64,13 @@ const GrievanceTracking = () => {
 
     const checkSession = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/checkUserSession", {
-          method: "GET",
-          credentials: "include",
-        });
+        const res = await fetch(
+          "https://citizen-grivance-system.onrender.com/api/checkUserSession",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
         setIsLoggedIn(res.ok); // true if 200 OK
       } catch (err) {
         console.error("Session check failed", err);
