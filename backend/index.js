@@ -17,12 +17,26 @@ app.set("trust proxy", 1);
 connectDB();
 
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://citizen-grivance-system.vercel.app",
+  "https://citizen-grivance-system.onrender.com",
+  "https://citizen-grivevance-system.vercel.app"
+];
+
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
 
 app.use(sessionMiddleware);
 
