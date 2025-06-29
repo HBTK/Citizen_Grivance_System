@@ -12,9 +12,10 @@ const sessionMiddleware = session({
   cookie: {
     maxAge: 20 * 60 * 1000,
     httpOnly: true,
-    sameSite: "lax",
-    secure: false,
+    sameSite: "none",   // ✅ Allow cross-origin
+    secure: true,       // ✅ Required for cookies on HTTPS (like Render)
   },
 });
+
 
 module.exports = sessionMiddleware;
