@@ -1,8 +1,6 @@
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 require("dotenv").config();
-app.set("trust proxy", 1); // <- Add this above sessionMiddleware
-
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET || "officerSecret123",
   resave: false,
