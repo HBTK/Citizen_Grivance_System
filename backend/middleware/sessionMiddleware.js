@@ -1,6 +1,8 @@
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 require("dotenv").config();
+app.set("trust proxy", 1); // <- Add this above sessionMiddleware
+
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET || "officerSecret123",
   resave: false,
@@ -12,10 +14,11 @@ const sessionMiddleware = session({
   cookie: {
     maxAge: 20 * 60 * 1000,
     httpOnly: true,
-    sameSite: "none",   // ✅ Allow cross-origin
-    secure: true,       // ✅ Required for cookies on HTTPS (like Render)
+    sameSite: "none", // <- Important for cross-origin
+    secure: true,     // <- Must be true for HTTPS
   },
 });
+
 
 
 module.exports = sessionMiddleware;
