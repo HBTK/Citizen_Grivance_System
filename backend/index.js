@@ -13,7 +13,7 @@ const sessionRoutes = require("./routes/sessionRoutes");
 const logoutRoutes = require("./routes/logoutRoute");
 const app = express();
 app.use(express.json());
-
+app.set("trust proxy", 1);
 connectDB();
 
 app.use(express.json());
