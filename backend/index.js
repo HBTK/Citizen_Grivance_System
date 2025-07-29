@@ -21,7 +21,8 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://citizen-grivance-system.vercel.app",
   "https://citizen-grivance-system.onrender.com",
-  "https://citizen-grivevance-system.vercel.app"
+  "https://citizen-grivevance-system.vercel.app",
+  "https://main.d3o0le9zmytcdz.amplifyapp.com"
 ];
 
 app.use(
