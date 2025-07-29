@@ -26,7 +26,7 @@ exports.reopenComplaint = async (req, res) => {
         .json({ message: "Complaint not found with this Grievance ID." });
     }
 
-    if (complaint.status !== "Resolved") {
+    if (complaint.status !== "Resolved" || complaint.status !== "resolved" ) {
       return res
         .status(400)
         .json({ message: "Only resolved grievances can be reopened." });
