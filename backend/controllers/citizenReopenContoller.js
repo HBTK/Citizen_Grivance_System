@@ -35,21 +35,19 @@ exports.reopenComplaint = async (req, res) => {
     let uploadedEvidence = [];
 
     // If user uploaded new evidence
-    if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const result = await cloudinary.uploader.upload(file.path, {
-          folder: "grievance_attachments",
-        });
+    if (req.file) {
+  const result = await cloudinary.uploader.upload(req.file.path, {
+    folder: "grievance_attachments",
+  });
 
-        uploadedEvidence.push({
-          fileUrl: result.secure_url,
-          fileType: result.resource_type + "/" + result.format,
-        });
+  uploadedEvidence.push({
+    fileUrl: result.secure_url,
+    fileType: result.resource_type + "/" + result.format,
+  });
 
-        // Delete file after uploading to Cloudinary
-        fs.unlinkSync(file.path);
-      }
-    }
+  fs.unlinkSync(req.file.path);
+}
+
 
     // Update status to 'revert_back' and push to logs
     complaint.status = "revert_back";
