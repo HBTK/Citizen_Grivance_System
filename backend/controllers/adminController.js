@@ -118,6 +118,27 @@ exports.getDepartmentOfficers = async (req, res) => {
   }
 };
 
+exports.getAllDepartmentComplaints = async (req, res) => {
+  try {
+    const { department } = req.session.admin;
+    if (!department) {
+      return res.status(401).json({ message: "Admin not logged in" });
+    }
+
+    // Fetch *all* complaints for that department
+    const complaints = await Complaint.find({ department })
+      .populate("citizenId", "name email")   // optional: if you want citizen details
+      .populate("officerId", "name email")   // optional: show assigned officer
+      .sort({ submittedAt: -1 });
+
+    res.status(200).json({ complaints });
+  } catch (error) {
+    console.error("Error fetching all department complaints:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
 exports.assignOfficerToComplaint = async (req, res) => {
   try {
     const { officerName, grievanceId } = req.body;
