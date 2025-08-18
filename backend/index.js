@@ -22,7 +22,8 @@ const allowedOrigins = [
   "https://citizen-grivance-system.vercel.app",
   "https://citizen-grivance-system.onrender.com",
   "https://citizen-grivevance-system.vercel.app",
-  "https://main.d3o0le9zmytcdz.amplifyapp.com"
+  "https://main.d3o0le9zmytcdz.amplifyapp.com",
+  "https://main.d3x5934421hvg.amplifyapp.com"
 ];
 
 app.use(
